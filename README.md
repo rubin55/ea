@@ -24,19 +24,19 @@ touch its preferences dialog, and some is not a file at all and needs an
 external tool to reach.
 
 Editing it from a script means regular expressions against formatting, which is
-brittle: when whatever you're matching on stops matching, or worse, starts 
+brittle. When whatever you're matching on stops matching, or worse, starts 
 matching multiple things, chaos ensues.
 
 Editing it with a parser brings its own can of worms, because normally, parsing
 and reserialising could throw away comments, blank lines, ordering and possibly
-quoting style. That sub-optimal to say the least, for files a human also edits,
-and possibly destructive for files an application manages.
+quoting style. That's sub-optimal to say the least, for files a human also 
+edits, and possibly destructive for files an application manages.
 
 ## The model
 
 There are essentially six core concepts to `ea`:
 
-  * Storage: where and how is something stored
+  * Storage: where and how something is stored
   * Format:  what is the format of the storage
   * Locator: how is the key addressed within that storage
   * Codec:   how is a value we care about encoded
@@ -62,7 +62,7 @@ What those bytes are, and therefore how they can be addressed.
 
 A format names a tree-sitter grammar. Given bytes it produces a concrete syntax
 tree, and given a tree plus a set of edits it splices them back into bytes.
-For now, TOML, Lua and elisp to begin with.
+For now, TOML, Lua and Elisp to begin with.
 
 Format is the connection between storage and locator. Storage does not know what
 it is holding, and a locator cannot be written without knowing which grammar it
@@ -209,7 +209,7 @@ say, `doom-font` with the variable-pitch size. In such a case, the fix is a `.`
 anchor, which requires immediate "siblinghood". Any query selecting sibling 
 pairs needs one.
 
-**Enumeration comes for free with tree-sitter.** The same elisp query finds all
+**Enumeration comes for free with tree-sitter.** The same Elisp query finds all
 four host blocks without being told they exist which is what makes `describe`
 and `dump` sub-commands possible (note: probably prefer query locators over line
 anchors wherever there is a choice, because anchors cannot enumerate).
@@ -252,8 +252,8 @@ still leave a host partly changed, and for `tool` storage this cannot be
 avoided, since there is nothing to abort once, for example, `gsettings` has 
 returned.
 
-  * **Batch by document.** Group edits per file, parse once, apply all, write
-    once. Does not read-parse-write per setting.
+  * **Batch by storage.** Group edits per file/tool, parse once, apply all,
+    write once. Does not read-parse-write per setting.
   * **Byte offsets invalidate each other.** Splice the first edit and every
     later offset in that file is stale. Apply in descending offset order, or
     feed edits back through tree-sitter's incremental API.
@@ -298,7 +298,7 @@ Proof-of-concept modules:
 | --------- | ------- | ------ | ----------- | ------------------------------ |
 | alacritty | file    | TOML   | bare        | happy path, table scoping      |
 | neovim    | file    | Lua    | vim guifont | losslessness inside the value  |
-| emacs     | file    | elisp  | bare        | locators in an untyped grammar |
+| emacs     | file    | Elisp  | bare        | locators in an untyped grammar |
 | gnome     | tool    | n/a    | pango       | using a tool instead of a file |
 
 ## Non-goals
