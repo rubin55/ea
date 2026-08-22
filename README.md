@@ -1,7 +1,7 @@
 # Ea
 
 Entity access. Stores and exposes entities uniformly. Ea also happens to be the
-Akkadian name of the Mesopotamian god of wisdom, clever counsel, and practical
+Akkadian name of the Mesopotamian god of wisdom, counsel, and practical
 knowledge.
 
 `ea` reads and writes individual settings inside configuration that it does not
