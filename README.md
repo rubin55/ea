@@ -1,12 +1,12 @@
 # Ea
 
-Entity access. Stores and exposes entities uniformly. Ea also happens to be the
-Akkadian name of the Mesopotamian god of wisdom, counsel, and practical
-knowledge.
+Everything anything - work with k/v's in multiple file formats. Ea also happens
+to be the Akkadian name of the Mesopotamian god of wisdom, counsel, and
+practical knowledge.
 
 `ea` reads and writes individual settings inside configuration that it does not
 own, across many storage kinds and file formats, without disturbing anything it
-was not asked to change. What it can enumerate, read and write is the `entity`,
+was not asked to change. What it can enumerate, read and write is the `k/v`,
 which it accesses thusly.
 
 ```sh
@@ -24,12 +24,12 @@ touch its preferences dialog, and some is not a file at all and needs an
 external tool to reach.
 
 Editing it from a script means regular expressions against formatting, which is
-brittle. When whatever you're matching on stops matching, or worse, starts 
+brittle. When whatever you're matching on stops matching, or worse, starts
 matching multiple things, chaos ensues.
 
 Editing it with a parser brings its own can of worms, because normally, parsing
 and reserialising could throw away comments, blank lines, ordering and possibly
-quoting style. That's sub-optimal to say the least, for files a human also 
+quoting style. That's sub-optimal to say the least, for files a human also
 edits, and possibly destructive for files an application manages.
 
 ## The model
@@ -51,7 +51,7 @@ How to read and write the bytes. Two kinds to begin with:
   * `tool`: an external tool that gets and sets, such as `gsettings`.
 
 A third kind, `binary` stores reached through a library rather than a tool, is
-anticipated but not implemented. 
+anticipated but not implemented.
 
 Storage answers only "give me the bytes" and "take these bytes back". It does
 not know what format they are in.
@@ -77,7 +77,7 @@ the tool directly.
 Where, within some storage, the value sits.
 
 For files this is a tree-sitter query over a named grammar, with a capture
-called `@value` marking the node whose bytes are the setting. 
+called `@value` marking the node whose bytes are the setting.
 
 Optional constraints on a capture can narrow the match (for example, match only
 the font setting within the block where `name=Foo`).
@@ -86,9 +86,9 @@ For tools it is whatever addressing the tool itself uses, such as a `gsettings`
 schema plus key.
 
 Note that the locator is bound to the *format*, not to the storage. TOML, Lua
-and XML need entirely different locators and are all of type "file", while the 
+and XML need entirely different locators and are all of type "file", while the
 same TOML locator should work whether those bytes came from a local path, over
-a network, or out of an archive. 
+a network, or out of an archive.
 
 ### Codec
 
@@ -115,7 +115,7 @@ the Lua string as a single `string_content` node; what is inside it is not Lua.
 The name of a setting, for example: `alacritty.font.mono`.
 
 This is what is contained in a profile (can also be passed on the command line
-probably). It is independent of where the value lives, so that an application 
+probably). It is independent of where the value lives, so that an application
 moving its config file, or changing its config format, does not invalidate a
 given profile.
 
@@ -124,7 +124,7 @@ given profile.
 The decoded form of whatever sits at a locator.
 
 A codec turns the bytes at a locator into a value, and a value back into bytes.
-A value is (usually) structured instead of a simple scalar. For example, a font 
+A value is (usually) structured instead of a simple scalar. For example, a font
 descriptor has a family, a size, and often weights or flags.
 
 Still open: whether a key addresses a whole descriptor or a single field of one.
@@ -150,19 +150,19 @@ look like it worked. The correct codec would avoid that.
 ## Setting a value is merging
 
 Often, you don't just set a font size. You take an existing descriptor which
-has some microsyntax, change one field, and put back everything else exactly 
-as it was. Suppose you want to set a font size to `10` but the setting is 
-stored as `Sans Bold 10`. In that case, we must preserve `Sans Bold`. 
+has some microsyntax, change one field, and put back everything else exactly
+as it was. Suppose you want to set a font size to `10` but the setting is
+stored as `Sans Bold 10`. In that case, we must preserve `Sans Bold`.
 
-So a codec (microsyntax) decodes to a structured descriptor, not to, say, a 
-simple scalar value or string. `set` is a field update on that descriptor 
+So a codec (microsyntax) decodes to a structured descriptor, not to, say, a
+simple scalar value or string. `set` is a field update on that descriptor
 followed by re-encoding.
 
 ## Tree-sitter
 
-The idea is to describe each file format with a grammar and let the program 
+The idea is to describe each file format with a grammar and let the program
 work out how to change a value. That idea is right, but, for example, a plain
-EBNF describes recognition, but not necessarily serialization. Editing needs 
+EBNF describes recognition, but not necessarily serialization. Editing needs
 to serialize back with everything you did not touch intact.
 
 An inspiration for this is [Augeas](https://augeas.net/), which has done roughly
@@ -170,9 +170,9 @@ this since the 2000s, using bidirectional "lenses" to expose config files as
 trees.
 
 [tree-sitter](https://tree-sitter.github.io/) provides parsers for a myriad of
-file formats. It produces a 
-[concrete syntax tree](https://en.wikipedia.org/wiki/Parse_tree). Unlike an 
-[abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree), a 
+file formats. It produces a
+[concrete syntax tree](https://en.wikipedia.org/wiki/Parse_tree). Unlike an
+[abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree), a
 concrete syntax tree keeps every byte, including comments, blank lines and the
 original quoting.
 
@@ -206,7 +206,7 @@ with support for predicates and anchors. It remains data, which is the point of
 under the same parent matches every combination of them. Against a real `emacs`
 config that produced twelve matches where eight were correct, silently pairing,
 say, `doom-font` with the variable-pitch size. In such a case, the fix is a `.`
-anchor, which requires immediate "siblinghood". Any query selecting sibling 
+anchor, which requires immediate "siblinghood". Any query selecting sibling
 pairs needs one.
 
 **Enumeration comes for free with tree-sitter.** The same Elisp query finds all
@@ -227,7 +227,7 @@ hostname into the query string.
     installed (i.e. schema, not data).
   * `apply <profile>` sets many values at once.
 
-`dump` and `apply` are inverses. A profile is a collection of `key = value` 
+`dump` and `apply` are inverses. A profile is a collection of `key = value`
 lines, which is hand-editable, greppable and diffs cleanly:
 
 ```text
@@ -245,11 +245,11 @@ distinguishes one set of values from another.
 ## Plan and apply
 
 Every edit is computed and validated before any of it is written, so a profile
-that cannot apply in full fails before anything changes. 
+that cannot apply in full fails before anything changes.
 
 It is probably not a rollback guarantee. Once writing has begun, a failure can
-still leave a host partly changed, and for `tool` storage this cannot be 
-avoided, since there is nothing to abort once, for example, `gsettings` has 
+still leave a host partly changed, and for `tool` storage this cannot be
+avoided, since there is nothing to abort once, for example, `gsettings` has
 returned.
 
   * **Batch by storage.** Group edits per file/tool, parse once, apply all,
@@ -260,7 +260,7 @@ returned.
 
 ## Errors
 
-There should be no silent errors; errors are always explicit and clearly 
+There should be no silent errors; errors are always explicit and clearly
 communicated. Silent errors are a bug.
 
 A locator that matches nothing is an error, and it names the key, the storage

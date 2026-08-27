@@ -3,7 +3,7 @@
 
 use clap::{Parser, Subcommand};
 
-/// Entity access. Enables uniform access to "entities" which are key/value
+/// Everything anything. Enables uniform access to "entities" which are k/v
 /// pairs in various storages. Storages can be tool based or file based.
 /// For file based storage, it is file format aware.
 #[derive(Parser)]
