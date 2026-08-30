@@ -65,7 +65,7 @@ fn main() -> anyhow::Result<()> {
         Command::Get { key } => cmd_get(&key),
         Command::Set { key, value } => cmd_set(&key, &value),
         Command::Dump => cmd_dump(),
-        Command::Describe =>  cmd_describe(),
-        Command::Apply { profile, dry_run } => cmd_apply(&profile, dry_run)
+        Command::Describe => cmd_describe(),
+        Command::Apply { profile, dry_run } => cmd_apply(&profile, dry_run),
     }
 }
