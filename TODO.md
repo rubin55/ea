@@ -1,4 +1,4 @@
-# ea as Rust learning path
+# Todo
 
 Goal: build `ea` to working state. Each step is one component, and each
 component practices specific Rust skills. Order: vertical slice first
