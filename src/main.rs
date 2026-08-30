@@ -1,6 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Copyright © 2026 Rubin Simons
 
+mod codec;
+mod format;
+mod locator;
+mod modules;
+mod plan;
+mod storage;
+
 use clap::{Parser, Subcommand};
 
 /// Everything anything. Enables uniform access to "entities" which are k/v
@@ -32,15 +39,33 @@ enum Command {
     },
 }
 
+fn cmd_get(key: &str) -> anyhow::Result<()> {
+    todo!("get {key}")
+}
+
+fn cmd_set(key: &str, value: &str) -> anyhow::Result<()> {
+    todo!("set {key} = {value}")
+}
+
+fn cmd_dump() -> anyhow::Result<()> {
+    todo!("dump")
+}
+
+fn cmd_describe() -> anyhow::Result<()> {
+    todo!("describe")
+}
+
+fn cmd_apply(profile: &std::path::Path, dry_run: bool) -> anyhow::Result<()> {
+    todo!("apply {profile:?} dry_run={dry_run}")
+}
+
 fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
     match cli.command {
-        Command::Get { key } => todo!("get {key}"),
-        Command::Set { key, value } => todo!("set {key} = {value}"),
-        Command::Dump => todo!("dump"),
-        Command::Describe => todo!("describe"),
-        Command::Apply { profile, dry_run } => {
-            todo!("apply {profile:?} dry_run={dry_run}")
-        }
+        Command::Get { key } => cmd_get(&key),
+        Command::Set { key, value } => cmd_set(&key, &value),
+        Command::Dump => cmd_dump(),
+        Command::Describe =>  cmd_describe(),
+        Command::Apply { profile, dry_run } => cmd_apply(&profile, dry_run)
     }
 }
