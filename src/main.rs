@@ -8,6 +8,8 @@ mod modules;
 mod plan;
 mod storage;
 
+use std::path::{Path, PathBuf};
+
 use clap::{Parser, Subcommand};
 
 /// Everything anything. Enables uniform access to "entities" which are k/v
@@ -32,7 +34,7 @@ enum Command {
     Describe,
     /// Set many values at once from a profile.
     Apply {
-        profile: std::path::PathBuf,
+        profile: PathBuf,
         /// Compute the edits without writing them.
         #[arg(long)]
         dry_run: bool,
@@ -55,7 +57,7 @@ fn cmd_describe() -> anyhow::Result<()> {
     todo!("describe")
 }
 
-fn cmd_apply(profile: &std::path::Path, dry_run: bool) -> anyhow::Result<()> {
+fn cmd_apply(profile: &Path, dry_run: bool) -> anyhow::Result<()> {
     todo!("apply {profile:?} dry_run={dry_run}")
 }
 

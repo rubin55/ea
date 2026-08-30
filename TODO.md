@@ -7,7 +7,7 @@ storage, profiles, external module data).
 
 ## Rules (every step)
 
-- `cargo fmt` and `cargo clippy -- -D warnings` clean before review
+- `cargo +nightly fmt` and `cargo clippy -- -D warnings` clean before review
 - unit tests in-file under `#[cfg(test)] mod tests`
 - no new crates without agreement (`tempfile` agreed; serde deferred to step 10)
 - a step is done when the review says it is
