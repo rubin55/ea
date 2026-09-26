@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Copyright © 2026 Rubin Simons
 
+// Temporarily allowing dead code, remove when we reach step 5.
+#![allow(dead_code)]
+
 mod codec;
 mod format;
 mod locator;
