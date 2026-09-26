@@ -1,6 +1,6 @@
 edition = "2024"
 group_imports = "StdExternalCrate"
 imports_granularity = "Module"
-max_width = 120
+max_width = 80
 hard_tabs = false
 tab_spaces = 2
