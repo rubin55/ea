@@ -1,15 +1,19 @@
-# Todo
+# Build `ea` to a working state, learning Rust on the way
 
-Goal: build `ea` to working state. Each step is one component, and each
+Build `ea` to a working state. Each step is one component, and each
 component practices specific Rust skills. Order: vertical slice first
 (get + set for alacritty/TOML end to end), then breadth (formats, tool
 storage, profiles, external module data).
 
-## Rules (every step)
+## Rules
 
-- `cargo +nightly fmt` and `cargo clippy -- -D warnings` clean before review
+- every step: `cargo +nightly fmt` and
+  `cargo clippy --all-targets -- -D warnings` clean before review
 - unit tests in-file under `#[cfg(test)] mod tests`
-- no new crates without agreement (`tempfile` agreed; serde deferred to step 10)
+- errors: `anyhow` everywhere; context strings name the key, path or query;
+  lowercase, no trailing punctuation
+- no new crates without agreement (`tempfile` agreed as a dev-dependency;
+  serde deferred to step 10)
 - a step is done when the review says it is
 
 ## References
@@ -46,9 +50,12 @@ modules.rs  key -> module data (appears at step 7, externalized at 10)
 
 **Decided:** `anyhow` everywhere. The lesson is the `Context` idiom: every
 failure site that owes the README's "name the key/storage/query" gets a
-`.with_context(|| format!(...))` so the message carries it. If a typed
-error becomes genuinely needed (distinguishing "not installed" from "no
-match" in describe, perhaps), we add it then.
+`.with_context(|| format!(...))` so the message carries it. If we need a
+typed error (distinguishing "not installed" from "no match" in describe,
+perhaps), we add it then.
+
+**Decided:** `#![allow(dead_code)]` in main.rs while stubs are unused;
+remove it at step 5, when the vertical slice wires everything up.
 
 **Tasks:**
 - create the stub modules, `mod storage;` ... declared in main.rs
@@ -56,10 +63,12 @@ match" in describe, perhaps), we add it then.
   still `todo!()` inside
 - context drill: a `fn read(p: &Path) -> anyhow::Result<Vec<u8>>` in
   storage.rs that wraps `std::fs::read` so the error message names the
-  path; a test asserts a failed read's message contains the path
+  path; a test (using `tempfile::tempdir()`) asserts a failed read's
+  message contains the path
 
 **Skills:** modules and `use` paths, `?` propagation, `anyhow::Context`
-(closure form is lazy: the message is built only on failure).
+(closure form is lazy: the message is built only on failure), `{:#}` to
+print the whole error chain.
 
 **Done:** skeleton compiles, context test passes, clippy -D warnings clean.
 **Status:** in-progress
@@ -214,9 +223,3 @@ config.
 
 **Done:** adding a module changes no compiled code.
 **Status:** not-started
-
-## Calibration (resolved)
-
-- Shaky spots: none in particular
-- Error style: B, anyhow everywhere; context strings carry key/path/query
-- tempfile: agreed
