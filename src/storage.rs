@@ -6,7 +6,8 @@ use std::path::Path;
 use anyhow::Context;
 
 fn read(p: &Path) -> anyhow::Result<Vec<u8>> {
-  let content = std::fs::read(p).with_context(|| format!("Failed to read from {}", p.display()))?;
+  let content = std::fs::read(p)
+    .with_context(|| format!("Failed to read from {}", p.display()))?;
   Ok(content)
 }
 
