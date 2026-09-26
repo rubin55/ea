@@ -6,18 +6,18 @@ use std::path::Path;
 use anyhow::Context;
 
 fn read(p: &Path) -> anyhow::Result<Vec<u8>> {
-    let content = std::fs::read(p).with_context(|| format!("Failed to read from {}", p.display()))?;
-    Ok(content)
+  let content = std::fs::read(p).with_context(|| format!("Failed to read from {}", p.display()))?;
+  Ok(content)
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+  use super::*;
 
-    // TODO: Build a non-existing path using tempfile::tempdir()
-    // TODO: Handle Result ok/err, consider Result::unwrap_err()
-    #[test]
-    fn non_existing_path() {
-        read(Path::new("foo")).unwrap_err();
-    }
+  // TODO: Build a non-existing path using tempfile::tempdir()
+  // TODO: Handle Result ok/err, consider Result::unwrap_err()
+  #[test]
+  fn non_existing_path() {
+    read(Path::new("foo")).unwrap_err();
+  }
 }
