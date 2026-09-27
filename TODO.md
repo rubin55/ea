@@ -71,7 +71,7 @@ remove it at step 5, when the vertical slice wires everything up.
 print the whole error chain.
 
 **Done:** skeleton compiles, context test passes, clippy -D warnings clean.
-**Status:** in-progress
+**Status:** completed
 
 ### 2. Storage: file backend
 

@@ -13,10 +13,12 @@ fn read(p: &Path) -> anyhow::Result<Vec<u8>> {
 mod tests {
   use super::*;
 
-  // TODO: Build a non-existing path using tempfile::tempdir()
-  // TODO: Handle Result ok/err, consider Result::unwrap_err()
   #[test]
   fn non_existing_path() {
-    read(Path::new("foo")).unwrap_err();
+    let dir = tempfile::tempdir().unwrap();
+    let path = dir.path().join("some.file");
+    let err = read(&path).unwrap_err();
+    let msg = err.to_string();
+    assert!(msg.contains(&path.display().to_string()));
   }
 }
