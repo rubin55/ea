@@ -20,10 +20,10 @@ ea apply ~/.config/ea/profiles/frame    # reproduce it elsewhere
 
 ## The problem
 
-Configuration lives in many incompatible places. Some of it is a text file you
-wrote by hand. Some of it is a text file the application rewrites each time
-you use its preferences dialog. Some of it is not a file at all, and you need
-an external tool to reach it.
+Configuration lives in many places. It can be a text file you wrote by hand.
+Some of it is a text file the application rewrites each time you use its
+preferences dialog. Yet another is not a file at all, and you need an external
+tool to reach it.
 
 Editing it from a script means regular expressions against formatting. This is
 brittle. When your pattern stops matching, or worse, starts matching more than
